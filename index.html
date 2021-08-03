@@ -2,17 +2,38 @@
 <html lang="pt-br">
    <head>
       <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="/css/reset.css" />
       <link rel="stylesheet" href="/css/style.css" />
       <link rel="shortcut icon" href="favicon.ico" />
       <title>Bate-Papo UOL</title> 
    </head>
    <body>
-      <header>
+      <header class="fixed-boxes">
+         <img src="/img/logo1.png" />
+         <ion-icon name="people"></ion-icon>
       </header>
-
+      <main>
+         <div class="message status-message">
+            <span class="timestamp">(00:00:00)</span>
+            <span class="actor">Quem</span>
+            <span class="action">para</span>
+            <span class="receiver">Quem:</span>
+            <span class="sent-message">Mensagem blah blah blah ablah blah blah blah </span>
+         </div>
+         <div class="message private-message">
+            blah blah blah
+         </div>
+         <div class="message">
+            blah blah blah
+         </div>
+      </main>
+      <div class="fixed-boxes insert-text">
+         <input type="text" placeholder="Escreva aqui...">
+         <ion-icon name="paper-plane-outline"></ion-icon>
+      </div>
       <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
       <script src="/js/script.js"></script>
-    </body>
+   </body>
 </html>
