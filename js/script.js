@@ -10,9 +10,7 @@ let username = {};
 
 checkUsername("Qual é seu lindo nome?");
 
-
 function checkUsername (pergunta) {
-
     do {
         yourName = prompt(pergunta);
     } while(yourName === "" || yourName === null);
@@ -33,8 +31,13 @@ function checkUsername (pergunta) {
     console.log(postAnswer);
 }
 
-function postAnswer(postResponse) {
+function userIsHere() {
+    sendContent = axios.post(POST_STATUS_URL, username);
+}
 
+setInterval(userIsHere, 5000);
+
+function postAnswer(postResponse) {
     if (postResponse.status === 200) {
         ifSuccessful(postResponse);
     } else {
@@ -57,7 +60,6 @@ function ifSuccessful(response) {
 
     getContent.then(loadMessages);
     // getContent.catch(console.log("Deu ruim"));
-
 }
 
 setInterval(ifSuccessful, 3000);
@@ -108,12 +110,16 @@ function loadMessages(messageResult) {
 function sendMessage() {
     const textMessage = document.querySelector(".insert-text input").value;
 
+    console.log("myMSG", textMessage);
+
     const messageData = {
-        from: username,
+        from: yourName,
         to: "Todos",
         text: textMessage,
         type: "message"
     }
+
+    console.log(messageData);
 
     const sending = axios.post(POST_MESSAGES_URL, messageData);
 
@@ -121,7 +127,7 @@ function sendMessage() {
     sending.catch(sendError);
 }
 
+
 function sendError() {
     return window.location.reload();
 }
-
