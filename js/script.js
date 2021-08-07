@@ -12,8 +12,7 @@ function checkUsername (pergunta) {
 
     do {
         yourName = prompt(pergunta);
-    } while(yourName === "");
-    // Ainda deixa o nome ir vazio quando clica em "Cancelar" o prompt
+    } while(yourName === "" || yourName === null);
     
 
     username = {
@@ -47,7 +46,16 @@ function postAnswer(postResponse) {
             } else {
                 alert("Algo deu errado, mas não sei o que. Tente novamente.");
             }
-        } while (postResponse.status !== 200)
+        } while (postResponse.status !== 200);
+        // while (postResponse.status !== 200) {
+        //     if (postResponse.response.status === 400) {
+
+        //         checkUsername("O nome escolhido já está em uso. Escolha outro nome, por favor.");
+        //         // console.log("msg2", messageStatus);
+        //         // postResponse.status = messageStatus.status;
+        //     }
+        //     alert("Repetição de novo")
+        // }
     }
     console.log("Chegou até aqui");
     console.log(postResponse);
@@ -58,7 +66,9 @@ function ifSuccessful (respose) {
     const getContent = axios.get(GET_MESSAGES_URL);
 
     getContent.then(loadMessages);
-    getContent.catch(console.log("Deu ruim"));
+    // getContent.catch(console.log("Deu ruim"));
+
+
 }
 
 function loadMessages(messageResult) {
@@ -95,8 +105,18 @@ function loadMessages(messageResult) {
         }
     }
 
+    // pode ser uma boa ideia trocar a main por uma ul e as mensagens por lis?
+
     messageContainer.innerHTML = innerContainer;
+
+    const lastMessage = messageContainer.lastElementChild;
+    console.log(lastMessage);
+    lastMessage.scrollIntoView();
 }
+
+/* SET INTERVALS */
+
+// setInterval(loadMessages, 3000);
 
 // function userStatus() {
 //     axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status", username);
