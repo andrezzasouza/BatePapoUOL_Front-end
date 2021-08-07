@@ -1,5 +1,7 @@
 const POST_USER_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants";
 const GET_MESSAGES_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages";
+const POST_STATUS_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status";
+const POST_MESSAGES_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages";
 
 let yourName;
 let sendContent;
@@ -8,12 +10,12 @@ let username = {};
 
 checkUsername("Qual é seu lindo nome?");
 
+
 function checkUsername (pergunta) {
 
     do {
         yourName = prompt(pergunta);
     } while(yourName === "" || yourName === null);
-    
 
     username = {
         name: `${yourName}`
@@ -24,7 +26,7 @@ function checkUsername (pergunta) {
     console.log(sendContent.then());
     console.log(sendContent.catch());
 
-    sendContent.then(postAnswer);
+    sendContent.then(ifSuccessful);
     sendContent.catch(postAnswer);
 
     console.log("PA")
@@ -32,9 +34,6 @@ function checkUsername (pergunta) {
 }
 
 function postAnswer(postResponse) {
-
-    messageStatus = postResponse;
-    console.log("msg", messageStatus)
 
     if (postResponse.status === 200) {
         ifSuccessful(postResponse);
@@ -47,29 +46,21 @@ function postAnswer(postResponse) {
                 alert("Algo deu errado, mas não sei o que. Tente novamente.");
             }
         } while (postResponse.status !== 200);
-        // while (postResponse.status !== 200) {
-        //     if (postResponse.response.status === 400) {
-
-        //         checkUsername("O nome escolhido já está em uso. Escolha outro nome, por favor.");
-        //         // console.log("msg2", messageStatus);
-        //         // postResponse.status = messageStatus.status;
-        //     }
-        //     alert("Repetição de novo")
-        // }
     }
     console.log("Chegou até aqui");
     console.log(postResponse);
 }
 
 
-function ifSuccessful (respose) {
+function ifSuccessful(response) {
     const getContent = axios.get(GET_MESSAGES_URL);
 
     getContent.then(loadMessages);
     // getContent.catch(console.log("Deu ruim"));
 
-
 }
+
+setInterval(ifSuccessful, 3000);
 
 function loadMessages(messageResult) {
     const messages = messageResult.data;
@@ -114,13 +105,23 @@ function loadMessages(messageResult) {
     lastMessage.scrollIntoView();
 }
 
-/* SET INTERVALS */
+function sendMessage() {
+    const textMessage = document.querySelector(".insert-text input").value;
 
-// setInterval(loadMessages, 3000);
+    const messageData = {
+        from: username,
+        to: "Todos",
+        text: textMessage,
+        type: "message"
+    }
 
-// function userStatus() {
-//     axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status", username);
-// }
+    const sending = axios.post(POST_MESSAGES_URL, messageData);
 
-// setInterval(userStatus, 5000);
+    sending.then(ifSuccessful);
+    sending.catch(sendError);
+}
+
+function sendError() {
+    return window.location.reload();
+}
 
