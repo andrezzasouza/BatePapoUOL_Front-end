@@ -103,14 +103,11 @@ function loadMessages(messageResult) {
     messageContainer.innerHTML = innerContainer;
 
     const lastMessage = messageContainer.lastElementChild;
-    console.log(lastMessage);
     lastMessage.scrollIntoView();
 }
 
 function sendMessage() {
     const textMessage = document.querySelector(".insert-text input").value;
-
-    console.log("myMSG", textMessage);
 
     const messageData = {
         from: yourName,
@@ -118,8 +115,6 @@ function sendMessage() {
         text: textMessage,
         type: "message"
     }
-
-    console.log(messageData);
 
     const sending = axios.post(POST_MESSAGES_URL, messageData);
 
