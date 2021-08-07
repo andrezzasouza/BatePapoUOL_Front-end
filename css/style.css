@@ -37,11 +37,18 @@ header ion-icon {
 }
 
 main {
-    margin-top: 102px;
+    margin: 102px 0 92px;
     font-size: 14px;
     line-height: 20px;
     overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
+
+main::-webkit-scrollbar {
+    display: none;
+    scrollbar-width: none;
+  }
 
 main .timestamp {
     color: #AAAAAA;
@@ -79,21 +86,23 @@ main .timestamp {
 }
 
 .message {
+    width: 100%;
     margin: 4px 0;
     background-color: #FFFFFF;
     padding: 12px 9px 12px 8px;
+    text-overflow: ellipsis
 }
 
-.status-message {
+.status {
     margin: 4px 0;
     background-color: #DCDCDC;
 }
 
-.status-message .actor {
+.status .actor {
     margin-right: 4px;
 }
 
-.private-message {
+.private_message {
     margin: 4px 0;
     background-color: #FFDEDE;
 }
