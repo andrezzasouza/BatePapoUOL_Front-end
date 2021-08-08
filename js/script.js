@@ -87,7 +87,7 @@ function loadMessages(messageResult) {
             <span class="sent-message">${messages[i].text}</span>
          </div>`
         } else if (messages[i].type === "private_message") {
-            if (username === messages[i].from || username === messages[i].to) {
+            if (yourName === messages[i].from || yourName === messages[i].to) {
                 innerContainer += `<div class="message ${messages[i].type}">
                     <span class="timestamp">(${messages[i].time})</span>
                     <span class="actor">${messages[i].from}</span>
