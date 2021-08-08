@@ -87,14 +87,15 @@ function loadMessages(messageResult) {
             <span class="sent-message">${messages[i].text}</span>
          </div>`
         } else if (messages[i].type === "private_message") {
-            if (username === messages[i].from || username === messages[i].to)
-            innerContainer += `<div class="message ${messages[i].type}">
-            <span class="timestamp">(${messages[i].time})</span>
-            <span class="actor">${messages[i].from}</span>
-            <span class="action">reservadamente para</span>
-            <span class="receiver">${messages[i].to}:</span>
-            <span class="sent-message">${messages[i].text}</span>
-         </div>`
+            if (username === messages[i].from || username === messages[i].to) {
+                innerContainer += `<div class="message ${messages[i].type}">
+                    <span class="timestamp">(${messages[i].time})</span>
+                    <span class="actor">${messages[i].from}</span>
+                    <span class="action">reservadamente para</span>
+                    <span class="receiver">${messages[i].to}:</span>
+                    <span class="sent-message">${messages[i].text}</span>
+                </div>`
+            }
         }
     }
 
@@ -109,20 +110,32 @@ function loadMessages(messageResult) {
 function sendMessage() {
     const textMessage = document.querySelector(".insert-text input").value;
 
-    const messageData = {
-        from: yourName,
-        to: "Todos",
-        text: textMessage,
-        type: "message"
+    let sending;
+
+    if (textMessage !== "") {
+        const messageData = {
+            from: yourName,
+            to: "Todos",
+            text: textMessage,
+            type: "message"
+        }
+    
+        sending = axios.post(POST_MESSAGES_URL, messageData);
+        document.querySelector(".insert-text input").value = "";
+    
+        sending.then(ifSuccessful);
+        sending.catch(sendError);
     }
-
-    const sending = axios.post(POST_MESSAGES_URL, messageData);
-
-    sending.then(ifSuccessful);
-    sending.catch(sendError);
 }
-
 
 function sendError() {
     return window.location.reload();
 }
+
+let input = document.querySelector(".insert-text input")
+input.addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        document.querySelector(".insert-text button").click();
+    }
+})
