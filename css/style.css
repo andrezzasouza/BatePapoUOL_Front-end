@@ -1,3 +1,5 @@
+/* CONFIGURAÇÕES GERAIS */
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
 
 * {
@@ -9,58 +11,7 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-.login {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 5;
-    background-color: #FFFFFF;
-}
-
-.login img {
-    margin: 72px calc((100% - 130px)/2) 94px;
-}
-
-.login input {
-    width: 261px;
-    height: 54px;
-    margin: 0 calc((100% - 261px)/2) 15px;
-    border: 1px solid #D7D7D7;
-    border-radius: 4px;
-    text-align: center;
-    vertical-align: middle;
-}
-
-/* falta evitar o scroll enquanto a tela de login aparece. Talvez não seja necessário se as mensagens ainda não tiverem carregado... */
-
-.login input::placeholder {
-    font-family: 'Roboto', sans-serif;
-    font-size: 18px;
-    line-height: 25px;
-    color: #AEAEAE;
-}
-
-.login input:focus {
-    outline: none;
-}
-
-.login button {
-    font-size: 18px;
-    line-height: 25px;
-    background-color: #E7E7E7;
-    color: #696969;
-    border: none;
-    border-radius: 9px;
-    width: 109px;
-    height: 45px;
-    margin: 0 calc((100% - 109px)/2);
-}
-
-.hidden {
-    display: none;
-}
+/* BARRA SUPERIOR */
 
 header {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
@@ -89,23 +40,57 @@ header ion-icon {
     align-items: center;
 }
 
+/* CONTAINER DE MENSAGENS */
+
 main {
     margin: 102px 0 92px;
     font-size: 14px;
     line-height: 20px;
     overflow-y: scroll;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 main::-webkit-scrollbar {
     display: none;
     scrollbar-width: none;
-  }
+}
 
 main .timestamp {
     color: #AAAAAA;
 }
+
+/* CONFIGURAÇÕES DOS TIPOS DE MENSAGENS */
+
+.message {
+    width: 100%;
+    margin: 4px 0;
+    background-color: #FFFFFF;
+    padding: 12px 9px 12px 8px;
+    line-break: anywhere;
+}
+
+.status {
+    margin: 4px 0;
+    background-color: #DCDCDC;
+}
+
+.status .actor {
+    margin-right: 4px;
+}
+
+.private_message {
+    margin: 4px 0;
+    background-color: #FFDEDE;
+}
+
+.actor, 
+.receiver {
+    font-weight: 700;
+}
+
+/* BARRA INFERIOR COM INPUT E BOTÃO DE ENVIO */
 
 .insert-text {
     box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.05);
@@ -133,38 +118,14 @@ main .timestamp {
     outline: none;
 }
 
-.insert-text ion-icon {
-    width: 26px;
-    height: 26px;
-}
-
 .insert-text button {
     background-color: transparent;
     border: none;
+    display: flex;
+    padding-top: 3px;
 }
 
-.message {
-    width: 100%;
-    margin: 4px 0;
-    background-color: #FFFFFF;
-    padding: 12px 9px 12px 8px;
-    text-overflow: ellipsis
-}
-
-.status {
-    margin: 4px 0;
-    background-color: #DCDCDC;
-}
-
-.status .actor {
-    margin-right: 4px;
-}
-
-.private_message {
-    margin: 4px 0;
-    background-color: #FFDEDE;
-}
-
-.actor, .receiver {
-    font-weight: 700;
+.insert-text ion-icon {
+    width: 26px;
+    height: 26px;
 }

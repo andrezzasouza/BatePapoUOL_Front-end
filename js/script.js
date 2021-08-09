@@ -1,12 +1,15 @@
+/* LINKS DO SERVIDOR */
+
 const POST_USER_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants";
-const GET_MESSAGES_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages";
+const MESSAGES_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages";
 const POST_STATUS_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status";
-const POST_MESSAGES_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages";
+
+/* VARIÁVEIS GLOBAIS */
 
 let yourName;
-let sendContent;
-let messageStatus;
 let username = {};
+
+/* VERIFICA DISPONIBILIDADE DO NOME DE USUÁRIO */
 
 checkUsername("Qual é seu lindo nome?");
 
@@ -14,55 +17,79 @@ function checkUsername (pergunta) {
     do {
         yourName = prompt(pergunta);
     } while(yourName === "" || yourName === null);
-
+    console.log("Got username")
     username = {
         name: `${yourName}`
     }
+    console.log("username", username)
+    console.log("Created username object")
+    const sendContent = axios.post(POST_USER_URL, username);
+    console.log("Sent user post")
+    // console.log(sendContent.then());
+    // console.log(sendContent.catch());
 
-    sendContent = axios.post(POST_USER_URL, username);
-
-    console.log(sendContent.then());
-    console.log(sendContent.catch());
-
+    // Erro tá em uma dessas promises, quando passa por elas pela segunda vez, mas por quê?
     sendContent.then(ifSuccessful);
-    sendContent.catch(postAnswer);
+    console.log("Got user successful answer")
+    sendContent.catch(ifError); 
+    console.log("Got user error answer")
 
-    console.log("PA")
-    console.log(postAnswer);
+    // console.log("PA");
+    // console.log(ifError);
 }
+
+/* VERIFICA SE USUÁRIO ESTÁ NO CHAT */
 
 function userIsHere() {
+    console.log("send user stat")
     sendContent = axios.post(POST_STATUS_URL, username);
+    console.log("User is here, bitches!");
 }
 
-setInterval(userIsHere, 5000);
+/* TRATA SUCESSO DO LOGIN */
 
-function postAnswer(postResponse) {
-    if (postResponse.status === 200) {
-        ifSuccessful(postResponse);
-    } else {
-        do {
-            if (postResponse.response.status === 400) {
-                checkUsername("O nome escolhido já está em uso. Escolha outro nome, por favor.");
-                return checkUsername;
-            } else {
-                alert("Algo deu errado, mas não sei o que. Tente novamente.");
-            }
-        } while (postResponse.status !== 200);
+function ifSuccessful() {
+    console.log("if Suc")
+    const checkMessages = document.querySelector("main .message");
+    if (checkMessages === null) {
+        setInterval(userIsHere, 5000);
+        setInterval(ifSuccessful, 3000);
     }
-    console.log("Chegou até aqui");
-    console.log(postResponse);
-}
-
-
-function ifSuccessful(response) {
-    const getContent = axios.get(GET_MESSAGES_URL);
-
+    const getContent = axios.get(MESSAGES_URL);
+    console.log("load msgs")
     getContent.then(loadMessages);
-    // getContent.catch(console.log("Deu ruim"));
 }
 
-setInterval(ifSuccessful, 3000);
+/* TRATA ERRO DO LOGIN */
+
+function ifError(postResponse) {
+    console.log("no erro")
+    if (postResponse.response.status === 400) {
+        console.log("no erro 400")
+        checkUsername("O nome escolhido já está em uso. Escolha outro nome, por favor.");
+        console.log("depois do erro 400")
+        // return checkUsername;
+    } else {
+        alert("Algo deu errado. Tente novamente.");
+    }
+
+    // if (postResponse.status === 200) {
+    //     ifSuccessful(postResponse);
+    // } else {
+    //     do {
+    //         if (postResponse.response.status === 400) {
+    //             checkUsername("O nome escolhido já está em uso. Escolha outro nome, por favor.");
+    //             return checkUsername;
+    //         } else {
+    //             alert("Algo deu errado. Tente novamente.");
+    //         }
+    //     } while (postResponse.status !== 200);
+    // }
+    // console.log("Chegou até aqui");
+    // console.log(postResponse);
+}
+
+/* ATUALIZA MENSAGENS */
 
 function loadMessages(messageResult) {
     const messages = messageResult.data;
@@ -77,7 +104,7 @@ function loadMessages(messageResult) {
             <span class="timestamp">(${messages[i].time})</span>
             <span class="actor">${messages[i].from}</span>
             <span class="sent-message">${messages[i].text}</span>
-         </div>`
+         </div>`;
         } else if (messages[i].type === "message") {
             innerContainer += `<div class="message">
             <span class="timestamp">(${messages[i].time})</span>
@@ -85,7 +112,7 @@ function loadMessages(messageResult) {
             <span class="action">para</span>
             <span class="receiver">${messages[i].to}:</span>
             <span class="sent-message">${messages[i].text}</span>
-         </div>`
+         </div>`;
         } else if (messages[i].type === "private_message") {
             if (yourName === messages[i].from || yourName === messages[i].to) {
                 innerContainer += `<div class="message ${messages[i].type}">
@@ -94,22 +121,20 @@ function loadMessages(messageResult) {
                     <span class="action">reservadamente para</span>
                     <span class="receiver">${messages[i].to}:</span>
                     <span class="sent-message">${messages[i].text}</span>
-                </div>`
+                </div>`;
             }
         }
     }
-
-    // pode ser uma boa ideia trocar a main por uma ul e as mensagens por lis?
-
     messageContainer.innerHTML = innerContainer;
 
     const lastMessage = messageContainer.lastElementChild;
     lastMessage.scrollIntoView();
 }
 
+/* ENVIA MENSAGENS */
+
 function sendMessage() {
     const textMessage = document.querySelector(".insert-text input").value;
-
     let sending;
 
     if (textMessage !== "") {
@@ -120,7 +145,7 @@ function sendMessage() {
             type: "message"
         }
     
-        sending = axios.post(POST_MESSAGES_URL, messageData);
+        sending = axios.post(MESSAGES_URL, messageData);
         document.querySelector(".insert-text input").value = "";
     
         sending.then(ifSuccessful);
@@ -128,14 +153,18 @@ function sendMessage() {
     }
 }
 
+/* TRATA ERRO DE ENVIO */
+
 function sendError() {
     return window.location.reload();
 }
 
-let input = document.querySelector(".insert-text input")
+/* PERMITE ENVIO DE MENSAGENS COM A TECLA ENTER */
+
+const input = document.querySelector(".insert-text input");
 input.addEventListener("keyup", function(event) {
     event.preventDefault();
     if (event.keyCode === 13) {
         document.querySelector(".insert-text button").click();
     }
-})
+});
