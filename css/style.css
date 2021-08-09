@@ -24,13 +24,13 @@ body {
 }
 
 .logo {
-    margin: 72px calc((100% - 130px)/2) 50px;
+    margin: 72px calc((100% - 130px)/2) 30px;
 }
 
 .login input {
     width: 261px;
     height: 54px;
-    margin: 44px calc((100% - 261px)/2) 15px;
+    margin: 64px calc((100% - 261px)/2) 15px;
     border: 1px solid #D7D7D7;
     border-radius: 4px;
     text-align: center;
@@ -62,7 +62,7 @@ body {
 }
 
 .loading {
-    margin: 0 calc((100% - 150px)/2) 15px;
+    margin: 0 calc((100% - 150px)/2);
 }
 
 .status-box {
@@ -71,7 +71,7 @@ body {
 }
 
 .enter-box {
-    margin: 35px calc((100% - 76.56px)/2) 0;
+    margin: 20px calc((100% - 76.56px)/2) 0;
     text-align: center;
     font-size: 18px;
 }

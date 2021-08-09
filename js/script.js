@@ -16,10 +16,7 @@ const errorMessage = document.querySelector(".login .error-msg");
 const loading = document.querySelector(".loading");
 const entering = document.querySelector(".entering");
 
-
 /* VERIFICA DISPONIBILIDADE DO NOME DE USUÁRIO */
-
-// checkUsername("Qual é seu lindo nome?");
 
 function logIn() {
     yourName = loginInput.value;
@@ -81,7 +78,6 @@ function ifError(postResponse) {
         messageInput.value = "";
         errorMessage.innerHTML = "O nome escolhido já está em uso. Escolha outro nome, por favor.";
         yourName = loginInput.value;
-        
     } else {
         loginInput.innerHTML = "Algo deu errado. Recarregue a página.";
     }
