@@ -18,12 +18,13 @@ function checkUsername (pergunta) {
     do {
         yourName = prompt(pergunta);
     } while(yourName === "" || yourName === null);
+
     username = {
         name: `${yourName}`
     }
+
     const sendContent = axios.post(POST_USER_URL, username);
 
-    // Erro tá em uma dessas promises, quando passa por elas pela segunda vez, mas por quê?
     sendContent.then(ifSuccessful);
     sendContent.catch(ifError);
 }
