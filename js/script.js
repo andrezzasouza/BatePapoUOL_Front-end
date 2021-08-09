@@ -8,25 +8,44 @@ const POST_STATUS_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/
 
 let yourName;
 let username = {};
+let sendContent;
 const messageInput = document.querySelector(".insert-text input");
+const loginInput = document.querySelector(".login input");
+const loginButton = document.querySelector(".login button");
+const errorMessage = document.querySelector(".login .error-msg");
+const loading = document.querySelector(".loading");
+const entering = document.querySelector(".entering");
+
 
 /* VERIFICA DISPONIBILIDADE DO NOME DE USUÁRIO */
 
-checkUsername("Qual é seu lindo nome?");
+// checkUsername("Qual é seu lindo nome?");
 
-function checkUsername (pergunta) {
-    do {
-        yourName = prompt(pergunta);
-    } while(yourName === "" || yourName === null);
+function logIn() {
+    yourName = loginInput.value;
+    errorMessage.innerHTML = "";
 
-    username = {
-        name: `${yourName}`
+    loginInput.classList.add("hidden");
+    loginButton.classList.add("hidden");
+    loading.classList.remove("hidden");
+    entering.classList.remove("hidden");
+
+    setTimeout(checkUsername, 3000, yourName);
+}
+
+function checkUsername (yourName) {
+    if (yourName === "" || yourName === null || yourName === undefined) {
+        errorMessage.innerHTML = "Digite um nome de usuário."
+    } else {
+        username = {
+            name: `${yourName}`
+        }
+    
+        sendContent = axios.post(POST_USER_URL, username);
+    
+        sendContent.then(ifSuccessful);
+        sendContent.catch(ifError);
     }
-
-    const sendContent = axios.post(POST_USER_URL, username);
-
-    sendContent.then(ifSuccessful);
-    sendContent.catch(ifError);
 }
 
 /* VERIFICA SE USUÁRIO ESTÁ NO CHAT */
@@ -38,6 +57,9 @@ function userIsHere() {
 /* TRATA SUCESSO DO LOGIN */
 
 function ifSuccessful() {
+    const loginScreen = document.querySelector(".login");
+    loginScreen.classList.add("hidden");
+
     const checkMessages = document.querySelector("main .message");
     if (checkMessages === null) {
         setInterval(userIsHere, 5000);
@@ -51,9 +73,17 @@ function ifSuccessful() {
 
 function ifError(postResponse) {
     if (postResponse.response.status === 400) {
-        checkUsername("O nome escolhido já está em uso. Escolha outro nome, por favor.");
+        loginInput.classList.remove("hidden");
+        loginButton.classList.remove("hidden");
+        loading.classList.add("hidden");
+        entering.classList.add("hidden");
+
+        messageInput.value = "";
+        errorMessage.innerHTML = "O nome escolhido já está em uso. Escolha outro nome, por favor.";
+        yourName = loginInput.value;
+        
     } else {
-        alert("Algo deu errado. Tente novamente.");
+        loginInput.innerHTML = "Algo deu errado. Recarregue a página.";
     }
 }
 
@@ -126,11 +156,18 @@ function sendError() {
     return window.location.reload();
 }
 
-/* PERMITE ENVIO DE MENSAGENS COM A TECLA ENTER */
+/* PERMITE ENVIO DE TEXTOS COM A TECLA ENTER */
 
 messageInput.addEventListener("keyup", function(event) {
     event.preventDefault();
     if (event.keyCode === 13) {
         document.querySelector(".insert-text button").click();
+    }
+});
+
+loginInput.addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        document.querySelector(".login button").click();
     }
 });

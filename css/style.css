@@ -11,6 +11,77 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+/* TELA DE LOGIN */
+
+.login {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    background-color: #FFFFFF;
+}
+
+.logo {
+    margin: 72px calc((100% - 130px)/2) 50px;
+}
+
+.login input {
+    width: 261px;
+    height: 54px;
+    margin: 44px calc((100% - 261px)/2) 15px;
+    border: 1px solid #D7D7D7;
+    border-radius: 4px;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+.login input::placeholder {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    line-height: 25px;
+    color: #AEAEAE;
+}
+
+.login input:focus {
+    outline: none;
+}
+
+.login button {
+    font-size: 18px;
+    line-height: 25px;
+    background-color: #E7E7E7;
+    color: #696969;
+    border: none;
+    border-radius: 9px;
+    width: 109px;
+    height: 45px;
+    margin: 0 calc((100% - 109px)/2);
+}
+
+.loading {
+    margin: 0 calc((100% - 150px)/2) 15px;
+}
+
+.status-box {
+    margin: 35px calc((100% - 261px)/2) 0;
+    text-align: center;
+}
+
+.enter-box {
+    margin: 35px calc((100% - 76.56px)/2) 0;
+    text-align: center;
+    font-size: 18px;
+}
+
+.hidden {
+    display: none;
+    height: 0px;
+    width: 0px;
+}
+
 /* BARRA SUPERIOR */
 
 header {
